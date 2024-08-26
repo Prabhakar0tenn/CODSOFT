@@ -1,65 +1,65 @@
-#Password Generator
 import tkinter as tk
 import random
-import string  # Import the string module
+import string
 
-class PasswordGenerator:
-    def __init__(self):  # Fix the method name here
-        self.window = tk.Tk()
-        self.window.title("Custom Password Generator")
-        self.window.geometry("320x300")
-        self.window.configure(background="#e6e6fa")  # Light lavender background
+class PassGen:
+    def __init__(self):
+        self.win = tk.Tk()
+        self.win.title("Password Generator")
+        self.win.geometry("300x250")
+        self.win.configure(bg="lightblue")
 
-        self.header_label = tk.Label(self.window, text="Secure Password Generator", font=("Arial", 18, "italic"), fg="darkblue", bg="#e6e6fa")  # Dark blue font on light lavender background
-        self.header_label.pack(pady=15)
+        self.lbl_title = tk.Label(self.win, text="Password Generator", font=("Arial", 16), bg="lightblue")
+        self.lbl_title.pack(pady=10)
 
-        self.alpha_length_label = tk.Label(self.window, text="Length of Alphabets:", font=("Arial", 12), fg="#555", bg="#e6e6fa")  # Medium gray font on light lavender background
-        self.alpha_length_label.pack()
-        self.alpha_length_entry = tk.Entry(self.window, width=25, font=("Arial", 12), fg="#111", bg="#fafafa")  # Almost white background with dark gray font
-        self.alpha_length_entry.pack()
+        self.lbl_alpha = tk.Label(self.win, text="Alphabets Length:", bg="lightblue")
+        self.lbl_alpha.pack()
+        self.ent_alpha = tk.Entry(self.win)
+        self.ent_alpha.pack()
 
-        self.digit_length_label = tk.Label(self.window, text="Length of Digits:", font=("Arial", 12), fg="#555", bg="#e6e6fa")  # Medium gray font on light lavender background
-        self.digit_length_label.pack()
-        self.digit_length_entry = tk.Entry(self.window, width=25, font=("Arial", 12), fg="#111", bg="#fafafa")  # Almost white background with dark gray font
-        self.digit_length_entry.pack()
+        self.lbl_digit = tk.Label(self.win, text="Digits Length:", bg="lightblue")
+        self.lbl_digit.pack()
+        self.ent_digit = tk.Entry(self.win)
+        self.ent_digit.pack()
 
-        self.symbol_length_label = tk.Label(self.window, text="Length of Symbols:", font=("Arial", 12), fg="#555", bg="#e6e6fa")  # Medium gray font on light lavender background
-        self.symbol_length_label.pack()
-        self.symbol_length_entry = tk.Entry(self.window, width=25, font=("Arial", 12), fg="#111", bg="#fafafa")  # Almost white background with dark gray font
-        self.symbol_length_entry.pack()
+        self.lbl_sym = tk.Label(self.win, text="Symbols Length:", bg="lightblue")
+        self.lbl_sym.pack()
+        self.ent_sym = tk.Entry(self.win)
+        self.ent_sym.pack()
 
-        self.generate_button = tk.Button(self.window, text="Generate", command=self.create_password, font=("Arial", 12, "bold"), fg="white", bg="darkgreen")  # Dark green button with white font
-        self.generate_button.pack(pady=15)
+        self.btn_gen = tk.Button(self.win, text="Generate", command=self.make_pass)
+        self.btn_gen.pack(pady=10)
 
-        self.result_label = tk.Label(self.window, text="", font=("Arial", 14), fg="#333", bg="#e6e6fa")  # Dark gray font on light lavender background
-        self.result_label.pack()
+        self.lbl_result = tk.Label(self.win, text="", bg="lightblue")
+        self.lbl_result.pack()
 
-    def create_password(self):
-        letters = string.ascii_letters  # A more concise way to get all letters
-        digits = string.digits
-        special_chars = "!@#$%^&*()-_+=<>?"
+    def make_pass(self):
+        letters = string.ascii_letters
+        nums = string.digits
+        syms = "!@#$%^&*()"
 
         try:
-            num_letters = int(self.alpha_length_entry.get())
-            num_digits = int(self.digit_length_entry.get())
-            num_symbols = int(self.symbol_length_entry.get())
+            num_alpha = int(self.ent_alpha.get())
+            num_digit = int(self.ent_digit.get())
+            num_sym = int(self.ent_sym.get())
 
-            if num_letters < 0 or num_digits < 0 or num_symbols < 0:
-                raise ValueError("Lengths must be non-negative.")
+            if num_alpha < 0 or num_digit < 0 or num_sym < 0:
+                raise ValueError("Lengths must be positive.")
 
-            password_chars = random.choices(letters, k=num_letters) + \
-                             random.choices(digits, k=num_digits) + \
-                             random.choices(special_chars, k=num_symbols)
+            all_chars = random.choices(letters, k=num_alpha) + \
+                        random.choices(nums, k=num_digit) + \
+                        random.choices(syms, k=num_sym)
 
-            random.shuffle(password_chars)
-            password = ''.join(password_chars)
+            random.shuffle(all_chars)
+            password = ''.join(all_chars)
 
-            self.result_label.config(text=f"Generated Password: {password}")
+            self.lbl_result.config(text=f"Password: {password}")
         except ValueError:
-            self.result_label.config(text="Invalid input! Please enter positive numbers.")
+            self.lbl_result.config(text="Invalid input! Use numbers.")
 
     def run(self):
-        self.window.mainloop()
+        self.win.mainloop()
 
-generator = PasswordGenerator()
-generator.run()
+gen = PassGen()
+gen.run()
+
