@@ -1,62 +1,62 @@
 import tkinter as tk
 import random
 
-def decide_winner(player_choice, ai_choice):
-    if player_choice == ai_choice:
-        return "It's a draw!", 0, 0
-    elif (player_choice == 'Rock' and ai_choice == 'Scissors') or \
-         (player_choice == 'Scissors' and ai_choice == 'Paper') or \
-         (player_choice == 'Paper' and ai_choice == 'Rock'):
-        return "You won!", 1, 0
-    else:
-        return "AI wins!", 0, 1
+def decide_winner(p_choice, a_choice):
+    if p_choice == a_choice:
+        return "Draw!", 0, 0
+    if (p_choice == 'Rock' and a_choice == 'Scissors') or \
+       (p_choice == 'Scissors' and a_choice == 'Paper') or \
+       (p_choice == 'Paper' and a_choice == 'Rock'):
+        return "You win!", 1, 0
+    return "AI wins!", 0, 1
 
-def start_game(player_choice):
-    global player_score, ai_score
-    ai_choice = random.choice(['Rock', 'Paper', 'Scissors'])
-    outcome, player_pts, ai_pts = decide_winner(player_choice, ai_choice)
-    player_score += player_pts
-    ai_score += ai_pts
-    outcome_label.config(text=f"AI selected: {ai_choice}\n{outcome}")
-    scoreboard_label.config(text=f"Score - Player: {player_score}  AI: {ai_score}")
+def play_game(p_choice):
+    global p_score, a_score
+    a_choice = random.choice(['Rock', 'Paper', 'Scissors'])
+    result, p_pts, a_pts = decide_winner(p_choice, a_choice)
+    p_score += p_pts
+    a_score += a_pts
+    lbl_result.config(text=f"AI chose: {a_choice}\n{result}")
+    lbl_score.config(text=f"Score - Player: {p_score}  AI: {a_score}")
 
-def handle_choice(player_choice):
-    start_game(player_choice)
-    replay_button.pack(pady=15)
+def make_choice(choice):
+    play_game(choice)
+    btn_replay.pack(pady=15)
 
-def restart_game():
-    global player_score, ai_score
-    player_score = 0
-    ai_score = 0
-    outcome_label.config(text="")
-    scoreboard_label.config(text=f"Score - Player: {player_score}  AI: {ai_score}")
-    replay_button.pack_forget()
+def reset_game():
+    global p_score, a_score
+    p_score = 0
+    a_score = 0
+    lbl_result.config(text="")
+    lbl_score.config(text=f"Score - Player: {p_score}  AI: {a_score}")
+    btn_replay.pack_forget()
 
-player_score = 0
-ai_score = 0
+p_score = 0
+a_score = 0
 
 app = tk.Tk()
-app.title("Rock vs Paper vs Scissors")
-app.configure(background='#4CAF50')  # Dark green background
+app.title("Rock Paper Scissors")
+app.configure(bg='#4CAF50')
 
-prompt_label = tk.Label(app, text="Choose Rock, Paper, or Scissors:", font=('Courier', 18, 'bold'), bg='#4CAF50', fg='white')
-prompt_label.pack(pady=20)
+lbl_prompt = tk.Label(app, text="Choose Rock, Paper, or Scissors:", font=('Arial', 16), bg='#4CAF50', fg='white')
+lbl_prompt.pack(pady=20)
 
-rock_btn = tk.Button(app, text="Rock", width=12, command=lambda: handle_choice('Rock'), bg='#FF5733', fg='black')  # Coral button with black text
-rock_btn.pack(pady=8)
+btn_rock = tk.Button(app, text="Rock", width=12, command=lambda: make_choice('Rock'), bg='#FF5733', fg='black')
+btn_rock.pack(pady=5)
 
-paper_btn = tk.Button(app, text="Paper", width=12, command=lambda: handle_choice('Paper'), bg='#FF5733', fg='black')
-paper_btn.pack(pady=8)
+btn_paper = tk.Button(app, text="Paper", width=12, command=lambda: make_choice('Paper'), bg='#FF5733', fg='black')
+btn_paper.pack(pady=5)
 
-scissors_btn = tk.Button(app, text="Scissors", width=12, command=lambda: handle_choice('Scissors'), bg='#FF5733', fg='black')
-scissors_btn.pack(pady=8)
+btn_scissors = tk.Button(app, text="Scissors", width=12, command=lambda: make_choice('Scissors'), bg='#FF5733', fg='black')
+btn_scissors.pack(pady=5)
 
-outcome_label = tk.Label(app, text="", font=('Courier', 16), bg='#4CAF50', fg='white')  # White text on dark green background
-outcome_label.pack(pady=25)
+lbl_result = tk.Label(app, text="", font=('Arial', 14), bg='#4CAF50', fg='white')
+lbl_result.pack(pady=20)
 
-scoreboard_label = tk.Label(app, text=f"Score - Player: {player_score}  AI: {ai_score}", font=('Courier', 16), bg='#4CAF50', fg='white')
-scoreboard_label.pack(pady=15)
+lbl_score = tk.Label(app, text=f"Score - Player: {p_score}  AI: {a_score}", font=('Arial', 14), bg='#4CAF50', fg='white')
+lbl_score.pack(pady=10)
 
-replay_button = tk.Button(app, text="Play Again", width=12, command=restart_game, bg='#FF5733', fg='black')
+btn_replay = tk.Button(app, text="Play Again", width=12, command=reset_game, bg='#FF5733', fg='black')
 
 app.mainloop()
+
