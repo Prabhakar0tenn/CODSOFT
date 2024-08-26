@@ -1,66 +1,55 @@
 import tkinter as tk
+from tkinter import messagebox
 
 def calculate():
     try:
-        first_number = float(entry1.get())
-        second_number = float(entry2.get())
-        operation = operation_var.get()
-        
-        if operation == "Add":
+        first_number = float(entry_first_number.get())
+        second_number = float(entry_second_number.get())
+        operation = operation_choice.get()
+
+        if operation == "+":
             result = first_number + second_number
-        elif operation == "Subtract":
+        elif operation == "-":
             result = first_number - second_number
-        elif operation == "Multiply":
+        elif operation == "*":
             result = first_number * second_number
-        elif operation == "Divide":
-            if second_number != 0:
-                result = first_number / second_number
-            else:
-                result = "Cannot divide by zero"
+        elif operation == "/":
+            if second_number == 0:
+                raise ValueError("Cannot divide by zero.")
+            result = first_number / second_number
         else:
-            result = "Select an operation"
+            raise ValueError("Invalid operation selected.")
         
-        result_label.config(text=f"Result: {result}")
-    
-    except ValueError:
-        result_label.config(text="Invalid input! Please enter numbers.")
+        label_result.config(text=f"Result: {result}")
+    except ValueError as e:
+        messagebox.showerror("Error", str(e))
 
-# Create the application window
-app = tk.Tk()
-app.title("Your Own Simple Calculator")
+window = tk.Tk()
+window.title("Simple Calculator")
 
-# Labels
-label1 = tk.Label(app, text="First Number:")
-label1.grid(row=0, column=0)
+label_first_number = tk.Label(window, text="Enter first number:")
+label_first_number.pack()
 
-label2 = tk.Label(app, text="Second Number:")
-label2.grid(row=1, column=0)
+entry_first_number = tk.Entry(window)
+entry_first_number.pack()
 
-operation_label = tk.Label(app, text="Choose Operation:")
-operation_label.grid(row=2, column=0)
+label_second_number = tk.Label(window, text="Enter second number:")
+label_second_number.pack()
 
-# Entry widgets
-entry1 = tk.Entry(app, width=10)
-entry1.grid(row=0, column=1)
+entry_second_number = tk.Entry(window)
+entry_second_number.pack()
 
-entry2 = tk.Entry(app, width=10)
-entry2.grid(row=1, column=1)
+operation_choice = tk.StringVar(window)
+operation_choice.set("+")
 
-# Dropdown menu for operations
-operation_var = tk.StringVar(app)
-operation_var.set("Add")  # Default option
+operation_menu = tk.OptionMenu(window, operation_choice, "+", "-", "*", "/")
+operation_menu.pack()
 
-operations = ["Add", "Subtract", "Multiply", "Divide"]
-operation_menu = tk.OptionMenu(app, operation_var, *operations)
-operation_menu.grid(row=2, column=1)
+button_calculate = tk.Button(window, text="Calculate", command=calculate)
+button_calculate.pack()
 
-# Calculate button
-calc_button = tk.Button(app, text="Calculate", command=calculate)
-calc_button.grid(row=3, column=0, columnspan=2)
+label_result = tk.Label(window, text="Result: ")
+label_result.pack()
 
-# Result display
-result_label = tk.Label(app, text="Result:")
-result_label.grid(row=4, column=0, columnspan=2)
+window.mainloop()
 
-# Run the GUI event loop
-app.mainloop()
